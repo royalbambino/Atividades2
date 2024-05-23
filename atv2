@@ -1,0 +1,50 @@
+import ipywidgets as widgets
+from IPython.display import display
+
+import matplotlib.pyplot as plt
+
+
+#Dados das atividades e tempo gasto em dias
+atividades = [
+    "Escovar dentes", "Dormir", "Exercitar-se", "Banhar", "Trabalhar",
+    "Vestir-se", "Comer", "Necessidades físicas", "Formação acadêmica",
+    "Formação escolar", "Videogame", "Filme/Série", "Dirigir/Trânsito",
+    "Atividade Sexual", "Redes sociais", "Supermercado"
+]
+
+tempo_gasto_60_anos = [
+    76.04, 1064.58, 228.13, 38.02, 1216.67,
+    50.69, 228.13, 152.08, 456.25, 697.71,
+    304.17, 304.17, 304.17, 152.08, 304.17, 228.13
+]
+
+#Criar o gráfico de barras
+def create_bar_chart(age):
+    tempo_gasto_dias = [tempo * (age / 60) for tempo in tempo_gasto_60_anos]
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(atividades, tempo_gasto_dias, color="skyblue")
+    plt.xlabel("Atividades")
+    plt.ylabel("Tempo gasto (dias)")
+    plt.title(f"Tempo gasto em atividades ao longo de {age} anos")
+    plt.xticks(rotation=45, ha="right")
+
+    #Exibir o gráfico
+    plt.tight_layout()
+    plt.show()
+
+#Criar o widget de idade
+age_widget = widgets.IntSlider(min=1, max=100, value=60, description="Idade:")
+display(age_widget)
+
+
+
+#Atualizar o gráfico quando a idade é alterada
+age_widget.observe(lambda change: create_bar_chart(change.new), 'value')
+
+#Exibir o gráfico
+plt.tight_layout()
+plt.show()
+
+#Salvar o gráfico em um arquivo
+plt.savefig("tempo_gasto_atividades.png")
